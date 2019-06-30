@@ -11,7 +11,7 @@ $ sudo apt-get install virtualenv build-essential python-dev libxml2 libxml2-dev
 ```console
 $ virtualenv -p python2 venv_py2
 $ source venv_py2/bin/activate
-(venv_py2) $ pip install python-igraph pycairo
+(venv_py2) $ pip install python-igraph pycairo pydot
 ```
  3. Inicie o ambiente virtual e rode algum dos scripts
 
