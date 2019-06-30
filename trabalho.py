@@ -6,8 +6,6 @@ import re
 Esta classe, criada por nós, lê arquivos .dot
 '''
 class RegexDot:
-
-
 	def __init__(self, nome_do_arquivo):
 		conteudo = f=open(nome_do_arquivo, "r").read()
 		linhas = re.findall(r'.+ -> .+ \[label=.+\]',conteudo)
@@ -21,8 +19,6 @@ class RegexDot:
 
 		self.vertices = vertices
 		self.arestas = arestas
-
-
 
 def djikstra():
 	pass
