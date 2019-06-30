@@ -2,15 +2,23 @@
 
 from igraph import Graph, plot
 
+from parser import RegexDot
+
 #cria o objeto Graph (o grafo)
 g = Graph()
 
-g.add_vertices(4) #adiciona 4 vértices ao grafo (índices 0 a 3)
-g.add_edges([(0,1),(1,2),(0,2),(2,3)]) #adiciona 4 arestas ao grafo (índices de 0 a 3)
+dot = RegexDot("g1.dot")
 
-g.vs["name"] = ["v0","v1","v2","v3"] #atribui nomes aos vértices
-g.es["weight"] = [1,2,3,4] #atribui peso às arestas
+edges = [v["edge"] for v in dot.edges]
+weights = [v["label"] for v in dot.edges]
+vertices = dot.vertices
+print weights
 
+g.add_vertices(len(vertices)) #adiciona 4 vértices ao grafo (índices 0 a 3)
+g.add_edges(edges) #adiciona 4 arestas ao grafo (índices de 0 a 3)
+
+g.vs["name"] = ['v%d' % v for v in vertices]
+g.es["weight"] = weights #atribui peso às arestas
 
 #mostrando o grafo na tela
 

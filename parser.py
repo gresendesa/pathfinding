@@ -1,9 +1,21 @@
-import pydot
+import re
 
-class DOT:
+'''
+Esta classe, criada por nós, lê arquivos .dot e os transforma em um objeto
+'''
+class RegexDot:
+
 
 	def __init__(self, filename):
-		graph = pydot.graph_from_dot_file(filename)
-		edges = graph[0].obj_dict["edges"]
-		self.vertices = list(set([edge[0] for edge in edges] + [edge[1] for edge in edges]))
-		self.edges = [{"edge": edge, "label":edges[edge][0]['attributes']['label']} for edge in edges]
+		file_content = f=open(filename, "r").read()
+		lines = re.findall(r'.+ -> .+ \[label=.+\]',file_content)
+		vertices = []
+		edges = []
+		for line in lines:
+			peaces = re.findall(r'(.+) -> (.*) \[label=(.*)\]',re.sub(r'[\n\t]','',line))
+			vertices.extend([int(peaces[0][0]),int(peaces[0][1])])
+			vertices = list(set(vertices))
+			edges.append({"edge":(int(peaces[0][0]),int(peaces[0][1])), "label":float(peaces[0][2])})
+
+		self.vertices = vertices
+		self.edges = edges
