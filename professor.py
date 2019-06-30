@@ -15,7 +15,7 @@ vertices = dot.vertices
 g.add_vertices(len(vertices)) #adiciona 4 vértices ao grafo (índices 0 a 3)
 g.add_edges(edges) #adiciona 4 arestas ao grafo (índices de 0 a 3)
 
-g.vs["name"] = ['v%d' % v for v in vertices]
+g.vs["name"] = ['%d' % v for v in vertices]
 g.es["weight"] = weights #atribui peso às arestas
 
 #mostrando o grafo na tela
