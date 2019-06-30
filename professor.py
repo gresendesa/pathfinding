@@ -8,11 +8,9 @@ from parser import RegexDot
 g = Graph()
 
 dot = RegexDot("g1.dot")
-
 edges = [v["edge"] for v in dot.edges]
 weights = [v["label"] for v in dot.edges]
 vertices = dot.vertices
-print weights
 
 g.add_vertices(len(vertices)) #adiciona 4 vértices ao grafo (índices 0 a 3)
 g.add_edges(edges) #adiciona 4 arestas ao grafo (índices de 0 a 3)
