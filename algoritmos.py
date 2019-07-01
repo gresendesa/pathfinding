@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-
+from pprint import pprint
 from grafos import Grafo
 
 #Explicação: https://www.youtube.com/watch?v=aJ_2c9NVCIc&t=15s
@@ -15,24 +15,25 @@ def dijkstra(arquivo_dot, vertice_inicial):
 
 	while not finalizado: #O loop vai continuar até que o processo tenha sido finalizado
 
-		print "__ Nó sob análise: %d" % vertice_sob_analise
-		print "Nó %d adicionado à lista de visitados e removido da lista de não visitados" % vertice_sob_analise
+		#print "__ Nó sob análise: %d" % vertice_sob_analise
+		#print "Nó %d adicionado à lista de visitados e removido da lista de não visitados" % vertice_sob_analise
 		vertices_visitados.append(vertice_sob_analise)
 		vertices_nao_visitados.remove(vertice_sob_analise)
-		print "Vertices visitados %s" % ', '.join(str(e) for e in vertices_visitados)
-		print "Vertices não visitados %s" % ', '.join(str(e) for e in vertices_nao_visitados)
+		#print "Vertices visitados %s" % ', '.join(str(e) for e in vertices_visitados)
+		#print "Vertices não visitados %s" % ', '.join(str(e) for e in vertices_nao_visitados)
 
 		for vertice in vertices_nao_visitados:
 			try:
 				weight = dot.grafo.es.find(_from=vertice_sob_analise,_to=vertice)['weight']
-				print "Aresta (%d %d) %d < %f?" % (vertice_sob_analise, vertice,tabela[vertice_sob_analise]['weight'] + weight,tabela[vertice]['weight'])
+				#print "Aresta (%d %d) %d < %f?" % (vertice_sob_analise, vertice,tabela[vertice_sob_analise]['weight'] + weight,tabela[vertice]['weight'])
 				if tabela[vertice_sob_analise]['weight'] + weight < tabela[vertice]['weight']:
 					tabela.update({vertice: {'weight': tabela[vertice_sob_analise]['weight'] + weight, 'origem': vertice_sob_analise}})
 			except ValueError:
-				print "Aresta (%d %d) não encontrada" % (vertice_sob_analise, vertice)
+				#print "Aresta (%d %d) não encontrada" % (vertice_sob_analise, vertice)
+				pass
 
 
-		print tabela
+		#print tabela
 		#Escolhe o próximo vértice sob análise
 		min = sys.maxint
 		for vertice in vertices_nao_visitados:
@@ -43,9 +44,10 @@ def dijkstra(arquivo_dot, vertice_inicial):
 		if len(vertices_nao_visitados) == 0:
 			finalizado = True
 		else:
-			print "Próximo vértice escolhido: %d" % vertice_sob_analise
+			#print "Próximo vértice escolhido: %d" % vertice_sob_analise
+			pass
 
-	#print tabela
+	pprint(tabela)
 
 def bellman_ford():
 	pass
