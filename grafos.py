@@ -66,13 +66,17 @@ class Grafo:
 		def print_path(graph, tabela, vinicial, vdestino):
 
 			if tabela[vdestino]['origem'] == vinicial:
+				print vinicial
 				color_edge(graph, vinicial, vinicial)
 			elif tabela[vdestino]['origem'] is None:
 				pass
 			else:
 				color_edge(graph, vdestino, tabela[vdestino]['origem'])
 				print_path(graph, tabela, vdestino, tabela[vdestino]['origem'])
-
+				print vdestino
+				
+		print '\n MELHOR ROTA: '
+		print vinicial	
 		print_path(self.igraph, tabela, vinicial, vdestino)
 		#
 		self.plot()

@@ -78,7 +78,7 @@ algoritmo = '0'
 
 while (algoritmo != '1' and algoritmo != '2'):
 
-	algoritmo = raw_input("Qual algoritmo? 1=Dijkstra 2=Bellman Ford")
+	algoritmo = raw_input("Qual algoritmo? 1=Dijkstra 2=Bellman Ford ")
 
 	if algoritmo == '1':
 		grafo = Grafo(dot_filename=filename)
