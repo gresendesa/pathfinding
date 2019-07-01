@@ -24,24 +24,24 @@ class RegexDot:
 class Grafo:
 	def __init__(self, dot_filename):
 
-		self.grafo = Graph()
+		self.igraph = Graph(directed=True)
 
 		dot = RegexDot(dot_filename)
-		edges = [v["aresta"] for v in dot.arestas]
+		self.arestas = [v["aresta"] for v in dot.arestas]
 		weights = [v["peso"] for v in dot.arestas]
 		self.vertices = dot.vertices
-
-		self.grafo.add_vertices(len(self.vertices)) #adiciona 4 vértices ao grafo (índices 0 a 3)
-		self.grafo.add_edges(edges) #adiciona 4 arestas ao grafo (índices de 0 a 3)
-
-		self.grafo.vs["name"] = ['%d' % v for v in self.vertices]
-		self.grafo.es["weight"] = weights #atribui peso às arestas
+		#print(self.vertices)
+		self.igraph.add_vertices(int(len(self.vertices))) #adiciona vértices ao grafo (índices 0 a 3)
+		self.igraph.add_edges(self.arestas) #adiciona 4 arestas ao grafo (índices de 0 a 3)
+		#print self.igraph.get_edgelist()
+		self.igraph.vs["name"] = ['%d' % v for v in self.vertices]
+		self.igraph.es["weight"] = weights #atribui peso às arestas
 
 		#mostrando o grafo na tela
 
-		self.grafo.vs["label"] = self.grafo.vs["name"] #rotula os vértices com seus respectivos nomes
-		self.grafo.es["label"] = self.grafo.es["weight"] #rotula as arestas com seus respectivos pesos
+		self.igraph.vs["label"] = self.igraph.vs["name"] #rotula os vértices com seus respectivos nomes
+		self.igraph.es["label"] = self.igraph.es["weight"] #rotula as arestas com seus respectivos pesos
 
 	def plot(self):
-		layout = self.grafo.layout("kk") #atribui um layout para plotagem do grafo
-		plot(self.grafo,layout = layout) #apresenta o grafo usando interface gráfica
+		layout = self.igraph.layout("kk") #atribui um layout para plotagem do grafo
+		plot(self.igraph,layout = layout) #apresenta o grafo usando interface gráfica

@@ -1,0 +1,12 @@
+digraph g {
+	0 -> 1 [label=5];
+	0 -> 2 [label=8];
+	0 -> 3 [label=-4];
+	1 -> 0 [label=-2];
+	2 -> 1 [label=-3];
+	2 -> 3 [label=9];
+	3 -> 4 [label=2];
+	3 -> 1 [label=7];
+	4 -> 0 [label=6];
+	4 -> 2 [label=7];
+}
