@@ -45,3 +45,34 @@ class Grafo:
 	def plot(self):
 		layout = self.igraph.layout("kk") #atribui um layout para plotagem do grafo
 		plot(self.igraph,layout=layout) #apresenta o grafo usando interface gráfica
+
+
+	def plot_path(self, tabela, vinicial, vdestino):
+
+		self.igraph.es["color"] = "gray"
+		self.igraph.vs["color"] = "gray"
+
+		self.igraph.vs[vinicial]["color"] = "red"
+		self.igraph.vs[vdestino]["color"] = "red"
+
+		
+		def color_edge(graph, v1, v2):
+			try:
+				edges = graph.es.find(_within=[v1,v2])
+				edges["color"] = "red"
+			except ValueError:
+				pass
+
+		def print_path(graph, tabela, vinicial, vdestino):
+
+			if tabela[vdestino]['origem'] == vinicial:
+				color_edge(graph, vinicial, vinicial)
+			elif tabela[vdestino]['origem'] is None:
+				pass
+			else:
+				color_edge(graph, vdestino, tabela[vdestino]['origem'])
+				print_path(graph, tabela, vdestino, tabela[vdestino]['origem'])
+
+		print_path(self.igraph, tabela, vinicial, vdestino)
+		#
+		self.plot()

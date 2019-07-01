@@ -9,7 +9,7 @@ def dijkstra(grafo, vertice_inicial, vertice_destino):
 	vertices_nao_visitados = grafo.igraph.vs.indices #Inicia a lista de vértices não visitados
 	vertices_visitados = []
 	vertice_sob_analise = vertice_inicial #Primeiro vértice sob análise é o vértice inicial
-	tabela.update({vertice_inicial: {'peso':0, 'origem':vertice_inicial}}) #Inicia a tabela do primeiro vértice com 0
+	tabela.update({vertice_inicial: {'peso':0, 'origem':None}}) #Inicia a tabela do primeiro vértice com 0
 
 	while len(vertices_nao_visitados) > 0: #O loop vai continuar até que o processo tenha sido finalizado
 
@@ -32,22 +32,13 @@ def dijkstra(grafo, vertice_inicial, vertice_destino):
 				vertice_sob_analise = vertice
 
 	pprint(tabela)
-
-	grafo.igraph.es["color"] = "gray"
-	grafo.igraph.vs["color"] = "gray"
-
-	grafo.igraph.vs[vertice_inicial]["color"] = "red"
-	grafo.igraph.vs[vertice_destino]["color"] = "red"
-
-	edges = grafo.igraph.es.find(_within=[1,3])
-	edges["color"] = "red"
-	grafo.plot()
+	grafo.plot_path(tabela, vertice_inicial, vertice_destino)
 
 
 #Explicação: https://www.youtube.com/watch?v=vEztwiTELWs
 def bellman_ford(grafo, vertice_inicial, vertice_destino):
 	tabela = {int(i) : {'peso':sys.maxint, 'origem':None} for i in grafo.igraph.vs.indices} #Inicia a tabela com infinito
-	tabela.update({vertice_inicial: {'peso':0, 'origem':vertice_inicial}}) #Inicia a tabela do primeiro vértice com 0
+	tabela.update({vertice_inicial: {'peso':0, 'origem':None}}) #Inicia a tabela do primeiro vértice com 0
 	arestas = grafo.igraph.get_edgelist()
 	for i in range(0,len(grafo.igraph.vs.indices) - 1):
 		for aresta in arestas:
@@ -67,6 +58,7 @@ def bellman_ford(grafo, vertice_inicial, vertice_destino):
 				pass
 
 	pprint(tabela)
+	grafo.plot_path(tabela, vertice_inicial, vertice_destino)
 
 def rpf():
 	pass
@@ -74,12 +66,23 @@ def rpf():
 def spanning_tree():
 	pass
 
-grafo = Grafo("g1.dot")
+filename = raw_input("Digite o nome do arquivo .dot (exemplo: g2.dot): ")
+grafo = Grafo(dot_filename=filename)
 msg = lambda s : "Nó de %s [%s] " % (s,'|'.join(str(e) for e in grafo.vertices))
-dijkstra(grafo=grafo,vertice_inicial=int(input(msg('origem'))),vertice_destino=int(input(msg('destino'))))
 
+vertice_inicial = int(raw_input(msg('origem')))
 
-'''grafo = Grafo("g2.dot",directed=True)
-msg = lambda s : "Nó de %s [%s] " % (s,'|'.join(str(e) for e in grafo.vertices))
-bellman_ford(grafo=grafo,vertice_inicial=int(input(msg('origem'))),vertice_destino=int(input(msg('destino'))))
-'''
+vertice_destino=int(raw_input(msg('destino')))
+
+algoritmo = '0'
+
+while (algoritmo != '1' and algoritmo != '2'):
+
+	algoritmo = raw_input("Qual algoritmo? 1=Dijkstra 2=Bellman Ford")
+
+	if algoritmo == '1':
+		grafo = Grafo(dot_filename=filename)
+		dijkstra(grafo=grafo,vertice_inicial=vertice_inicial,vertice_destino=vertice_destino)
+	elif algoritmo == '2':
+		grafo = Grafo(dot_filename=filename, directed=True)
+		bellman_ford(grafo=grafo,vertice_inicial=vertice_inicial,vertice_destino=vertice_destino)
