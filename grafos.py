@@ -29,12 +29,12 @@ class Grafo:
 		dot = RegexDot(dot_filename)
 		edges = [v["aresta"] for v in dot.arestas]
 		weights = [v["peso"] for v in dot.arestas]
-		vertices = dot.vertices
+		self.vertices = dot.vertices
 
-		self.grafo.add_vertices(len(vertices)) #adiciona 4 vértices ao grafo (índices 0 a 3)
+		self.grafo.add_vertices(len(self.vertices)) #adiciona 4 vértices ao grafo (índices 0 a 3)
 		self.grafo.add_edges(edges) #adiciona 4 arestas ao grafo (índices de 0 a 3)
 
-		self.grafo.vs["name"] = ['%d' % v for v in vertices]
+		self.grafo.vs["name"] = ['%d' % v for v in self.vertices]
 		self.grafo.es["weight"] = weights #atribui peso às arestas
 
 		#mostrando o grafo na tela
