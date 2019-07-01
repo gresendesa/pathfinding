@@ -19,7 +19,7 @@ def dijkstra(grafo, vertice_inicial, vertice_destino):
 		for vertice in vertices_nao_visitados:
 			try:
 				peso = grafo.igraph.es.find(_within=[vertice_sob_analise,vertice])['weight']
-				if tabela[vertice_sob_analise]['peso'] + peso < tabela[vertice]['peso']:
+				if tabela[vertice_sob_analise]['peso'] + peso <= tabela[vertice]['peso']:
 					tabela.update({vertice: {'peso': tabela[vertice_sob_analise]['peso'] + peso, 'origem': vertice_sob_analise}})
 			except ValueError:
 				pass
@@ -32,6 +32,17 @@ def dijkstra(grafo, vertice_inicial, vertice_destino):
 				vertice_sob_analise = vertice
 
 	pprint(tabela)
+
+	grafo.igraph.es["color"] = "gray"
+	grafo.igraph.vs["color"] = "gray"
+
+	grafo.igraph.vs[vertice_inicial]["color"] = "red"
+	grafo.igraph.vs[vertice_destino]["color"] = "red"
+
+	edges = grafo.igraph.es.find(_within=[1,3])
+	edges["color"] = "red"
+	grafo.plot()
+
 
 #Explicação: https://www.youtube.com/watch?v=vEztwiTELWs
 def bellman_ford(grafo, vertice_inicial, vertice_destino):
@@ -63,11 +74,12 @@ def rpf():
 def spanning_tree():
 	pass
 
-'''grafo = Grafo("g1.dot")
+grafo = Grafo("g1.dot")
 msg = lambda s : "Nó de %s [%s] " % (s,'|'.join(str(e) for e in grafo.vertices))
 dijkstra(grafo=grafo,vertice_inicial=int(input(msg('origem'))),vertice_destino=int(input(msg('destino'))))
-'''
 
-grafo = Grafo("g2.dot")
+
+'''grafo = Grafo("g2.dot",directed=True)
 msg = lambda s : "Nó de %s [%s] " % (s,'|'.join(str(e) for e in grafo.vertices))
 bellman_ford(grafo=grafo,vertice_inicial=int(input(msg('origem'))),vertice_destino=int(input(msg('destino'))))
+'''

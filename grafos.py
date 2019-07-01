@@ -22,9 +22,9 @@ class RegexDot:
 		self.arestas = arestas
 
 class Grafo:
-	def __init__(self, dot_filename):
+	def __init__(self, dot_filename, directed=False):
 
-		self.igraph = Graph(directed=True)
+		self.igraph = Graph(directed=directed)
 
 		dot = RegexDot(dot_filename)
 		self.arestas = [v["aresta"] for v in dot.arestas]
@@ -44,4 +44,4 @@ class Grafo:
 
 	def plot(self):
 		layout = self.igraph.layout("kk") #atribui um layout para plotagem do grafo
-		plot(self.igraph,layout = layout) #apresenta o grafo usando interface gráfica
+		plot(self.igraph,layout=layout) #apresenta o grafo usando interface gráfica
