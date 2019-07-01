@@ -58,6 +58,9 @@ class Grafo:
 		
 		def color_edge(graph, v1, v2):
 			try:
+				edges = graph.es.find(_from=v1,_to=v2)
+				edges["color"] = "red"
+			except ValueError:
 				edges = graph.es.find(_within=[v1,v2])
 				edges["color"] = "red"
 			except ValueError:
