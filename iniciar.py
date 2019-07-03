@@ -3,7 +3,7 @@ from algoritmos import dijkstra, bellman_ford
 from grafos import Grafo
 
 while 1:
-	filename = raw_input("Digite o nome do arquivo .dot (exemplo: g2.dot): ")
+	filename = raw_input("Digite o nome do arquivo .dot (exemplos: g1.dot, g2.dot): ")
 	try:
 		grafo = Grafo(dot_filename=filename)
 		break
@@ -11,8 +11,14 @@ while 1:
 		print "O arquivo '%s' não existe. Tente novamente" % filename
 
 msg = lambda s : "Nó de %s [%s] " % (s,'|'.join(str(e) for e in grafo.vertices))
-vertice_inicial = int(raw_input(msg('origem')))
-vertice_destino=int(raw_input(msg('destino')))
+
+vertice_inicial=-1
+while vertice_inicial not in grafo.vertices:
+	vertice_inicial = int(raw_input(msg('origem')))
+
+vertice_destino=-1
+while vertice_destino not in grafo.vertices:
+	vertice_destino=int(raw_input(msg('destino')))
 
 algoritmo = None
 while (algoritmo != '1' and algoritmo != '2'):
