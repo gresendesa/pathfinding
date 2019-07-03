@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import sys
-from pprint import pprint
 from grafos import Grafo
 
 #Explicação: https://www.youtube.com/watch?v=aJ_2c9NVCIc&t=15s
@@ -31,8 +30,8 @@ def dijkstra(grafo, vertice_inicial, vertice_destino):
 				min = tabela[vertice]['peso']
 				vertice_sob_analise = vertice
 
-	pprint(tabela)
-	grafo.plot_path(tabela, vertice_inicial, vertice_destino)
+	grafo.printar_tabela(tabela)
+	grafo.plotar_caminho(tabela, vertice_inicial, vertice_destino)
 
 
 #Explicação: https://www.youtube.com/watch?v=vEztwiTELWs
@@ -57,8 +56,8 @@ def bellman_ford(grafo, vertice_inicial, vertice_destino):
 			except ValueError:
 				pass
 
-	pprint(tabela)
-	grafo.plot_path(tabela, vertice_inicial, vertice_destino)
+	grafo.printar_tabela(tabela)
+	grafo.plotar_caminho(tabela, vertice_inicial, vertice_destino)
 
 def rpf():
 	pass
@@ -66,23 +65,3 @@ def rpf():
 def spanning_tree():
 	pass
 
-filename = raw_input("Digite o nome do arquivo .dot (exemplo: g2.dot): ")
-grafo = Grafo(dot_filename=filename)
-msg = lambda s : "Nó de %s [%s] " % (s,'|'.join(str(e) for e in grafo.vertices))
-
-vertice_inicial = int(raw_input(msg('origem')))
-
-vertice_destino=int(raw_input(msg('destino')))
-
-algoritmo = '0'
-
-while (algoritmo != '1' and algoritmo != '2'):
-
-	algoritmo = raw_input("Qual algoritmo? 1=Dijkstra 2=Bellman Ford ")
-
-	if algoritmo == '1':
-		grafo = Grafo(dot_filename=filename)
-		dijkstra(grafo=grafo,vertice_inicial=vertice_inicial,vertice_destino=vertice_destino)
-	elif algoritmo == '2':
-		grafo = Grafo(dot_filename=filename, directed=True)
-		bellman_ford(grafo=grafo,vertice_inicial=vertice_inicial,vertice_destino=vertice_destino)

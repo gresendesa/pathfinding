@@ -1,12 +1,25 @@
 # -*- coding: utf-8 -*-
 
 from igraph import Graph, plot
+import sys
 import re
 
+color = lambda color, txt='': "{}{}\033[00m".format(color, txt)
+fundo_laranja = 	lambda txt='': color(color="\033[43m", txt=txt)
+fundo_azul = 		lambda txt='': color(color="\033[44m", txt=txt)
+magenta = 			lambda txt='': color(color="\033[36m", txt=txt)
+white = 			lambda txt='': color(color="\033[37m", txt=txt)
+azul =  			lambda txt='': color(color="\033[34m", txt=txt)
+vermelho_claro = 	lambda txt='': color(color="\033[91m", txt=txt)
+fundo_cinza_claro = lambda txt='': color(color="\033[47m", txt=txt)
+preto = 			lambda txt='': color(color="\033[98m", txt=txt)
+amarelo = 			lambda txt='': color(color="\033[93m", txt=txt)
+purpura_claro = 	lambda txt='': color(color="\033[94m", txt=txt)
+
 '''
-Esta classe, criada por nós, lê arquivos .dot
+Esta classe, criada por nós, lê arquivos .dot 
 '''
-class RegexDot:
+class ArquivoDot:
 	def __init__(self, nome_do_arquivo):
 		conteudo = f=open(nome_do_arquivo, "r").read()
 		linhas = re.findall(r'.+ -> .+ \[label=.+\]',conteudo)
@@ -22,11 +35,12 @@ class RegexDot:
 		self.arestas = arestas
 
 class Grafo:
+
 	def __init__(self, dot_filename, directed=False):
 
 		self.igraph = Graph(directed=directed)
 
-		dot = RegexDot(dot_filename)
+		dot = ArquivoDot(dot_filename)
 		self.arestas = [v["aresta"] for v in dot.arestas]
 		weights = [v["peso"] for v in dot.arestas]
 		self.vertices = dot.vertices
@@ -46,8 +60,17 @@ class Grafo:
 		layout = self.igraph.layout("kk") #atribui um layout para plotagem do grafo
 		plot(self.igraph,layout=layout) #apresenta o grafo usando interface gráfica
 
+	def printar_tabela(self, tabela):
 
-	def plot_path(self, tabela, vinicial, vdestino):
+		teams_list = ["Vertice", "V Origem", "Custo"]
+		data = [(v,d['origem'],d['peso'] if d['peso'] < sys.maxint else 'infinito') for v, d in tabela.items()]
+		row_format ="{:>12}" * (len(teams_list) + 1)
+		print(fundo_azul(vermelho_claro('\n                 Tabela de rotas                ')))
+		print(fundo_cinza_claro(azul(row_format.format("", *teams_list))))
+		for row in data:
+			print(fundo_cinza_claro(amarelo(row_format.format("",*row))))
+
+	def plotar_caminho(self, tabela, vinicial, vdestino):
 
 		self.igraph.es["color"] = "gray"
 		self.igraph.vs["color"] = "gray"
@@ -55,7 +78,6 @@ class Grafo:
 		self.igraph.vs[vinicial]["color"] = "red"
 		self.igraph.vs[vdestino]["color"] = "red"
 
-		
 		def color_edge(graph, v1, v2):
 			try:
 				edges = graph.es.find(_from=v1,_to=v2)
@@ -66,20 +88,14 @@ class Grafo:
 			except ValueError:
 				pass
 
-		def print_path(graph, tabela, vinicial, vdestino):
-
-			if tabela[vdestino]['origem'] == vinicial:
-				print vinicial
-				color_edge(graph, vinicial, vinicial)
-			elif tabela[vdestino]['origem'] is None:
-				pass
+		def print_path(graph, tabela, vdestino):
+			if tabela[vdestino]['origem'] is not None:
+				color_edge(graph, tabela[vdestino]['origem'], vdestino)
+				print_path(graph, tabela, tabela[vdestino]['origem'])
+				print(white(vdestino))
 			else:
-				color_edge(graph, vdestino, tabela[vdestino]['origem'])
-				print_path(graph, tabela, vdestino, tabela[vdestino]['origem'])
-				print vdestino
-				
-		print '\n MELHOR ROTA: '
-		print vinicial	
-		print_path(self.igraph, tabela, vinicial, vdestino)
-		#
+				print(white("Rota não disponível" if tabela[vdestino]['peso'] >= sys.maxint else vdestino))
+			
+		print(fundo_laranja(azul("\nTrajeto do vértice %d até o vértice %d:" % (vinicial, vdestino))))
+		print_path(self.igraph, tabela, vdestino)
 		self.plot()
